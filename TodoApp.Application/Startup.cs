@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Application.AuthProcessing;
 using TodoApp.Application.AuthProcessing.Concrete;
+using TodoApp.DataAccess;
 
 namespace TodoApp.Application
 {
@@ -50,7 +51,7 @@ namespace TodoApp.Application
                     ValidateAudience = false,
                 };
             });
-            
+
             services.AddSingleton<IJWTAuthtenticationManager>(new JWTAuthtenticateManager(seckey));
         }
 
