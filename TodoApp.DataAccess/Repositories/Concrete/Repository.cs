@@ -32,12 +32,12 @@ namespace TodoApp.DataAccess.Repositories.Concrete
             return _dbSet.ToList();
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(string id)
         {
             return _dbSet.Find(id);
         }
 
-        public void Remove(int id)
+        public void Remove(string id)
         {
             _dbSet.Remove(GetById(id));
         }

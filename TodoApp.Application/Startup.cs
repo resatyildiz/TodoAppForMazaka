@@ -1,40 +1,33 @@
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TodoApp.Application.AuthProcessing;
 using TodoApp.Application.AuthProcessing.Concrete;
-using TodoApp.DataAccess;
 
 namespace TodoApp.Application
 {
     public class Startup
     {
+        public string seckey; // JWT Security Key
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            seckey = Configuration.GetConnectionString("JWTSecurityKey");
         }
 
         public IConfiguration Configuration { get; set; }
-        private readonly string seckey = "mazakaseckey";
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
-
+            
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -67,6 +60,13 @@ namespace TodoApp.Application
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(options => options
+                .WithOrigins(new[] {"http://localhost:3000","http://localhost:8080","http://localhost:4200" })            
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+            );
 
             app.UseAuthentication();
             app.UseAuthorization();

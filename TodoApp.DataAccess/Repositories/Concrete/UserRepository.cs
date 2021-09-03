@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.DataAccess.Repositories.Abstract;
@@ -50,7 +51,7 @@ namespace TodoApp.DataAccess.Repositories.Concrete
         public User GetByUserName(string username) 
         {
             /**/
-            throw new NotImplementedException();
+            return (User) AppContext.Users.FirstOrDefault(u => u.UserName == username);
         }
 
     }

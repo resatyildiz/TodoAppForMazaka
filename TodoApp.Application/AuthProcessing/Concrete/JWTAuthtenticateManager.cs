@@ -18,15 +18,8 @@ namespace TodoApp.Application.AuthProcessing.Concrete
         {
             seckey = _seckey;
         }
-        public string Authenticate(string username, string password)
+        public string Generate(string Id)
         {
-            UnitOfWork uow = new UnitOfWork(new DataAccess.AppContext());
-            User user = uow.UserRepository.GetByUserName(username);
-
-            if (user.Id == null)
-            {
-                return null;
-            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(seckey);
@@ -34,7 +27,7 @@ namespace TodoApp.Application.AuthProcessing.Concrete
             {
                 Subject = new ClaimsIdentity(new Claim[] {
 
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.UserData, Id)
 
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
@@ -45,5 +38,22 @@ namespace TodoApp.Application.AuthProcessing.Concrete
 
             return tokenHandler.WriteToken(token);
         }
+
+        public JwtSecurityToken Verify(string jwt) 
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(seckey);
+
+            tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+            {
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = false,
+                ValidateAudience = false
+            }, out SecurityToken validatedToken);
+
+            return (JwtSecurityToken)validatedToken;
+        }    
+
     }
 }

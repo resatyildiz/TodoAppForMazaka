@@ -48,7 +48,7 @@ namespace TodoApp.DataAccess.Repositories.Concrete
             throw new NotImplementedException();
         }
 
-        Todo IRepository<Todo>.GetById(int id)
+        Todo IRepository<Todo>.GetById(string id)
         {
             throw new NotImplementedException();
         }

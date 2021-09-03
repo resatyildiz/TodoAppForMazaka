@@ -45,13 +45,15 @@
                {
                    UserName = "mazakaadmin",
                    Email = "admin@mazaka.com",
-                   FullName = "Mazaka Admin"
+                   FullName = "Mazaka Admin",
+                   PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
                },
                new User()
                {
                    UserName = "mazakauser",
                    Email = "user@mazaka.com",
-                   FullName = "Mazaka User"
+                   FullName = "Mazaka User",
+                   PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
                }
             };
 
