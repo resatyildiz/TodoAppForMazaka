@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TodoApp.Entities;
 
 namespace TodoApp.DataAccess.Repositories.Abstract
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IMRoleRepository : IRepository<mRole>
     {
-        User GetByUserName(string username);
     }
 }

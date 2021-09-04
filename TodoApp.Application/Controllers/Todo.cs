@@ -10,7 +10,7 @@ using TodoApp.Entities;
 
 namespace TodoApp.Application.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("[controller]")]
     public class Todo : ControllerBase
@@ -23,6 +23,7 @@ namespace TodoApp.Application.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IEnumerable<Entities.Todo> Get()
         {

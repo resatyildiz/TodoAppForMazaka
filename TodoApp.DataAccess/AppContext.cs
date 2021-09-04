@@ -20,12 +20,11 @@ namespace TodoApp.DataAccess
 
         public DbSet<Todo> Todos { get; set; }
         public DbSet<User> _Users { get; set; }
-
         public DbSet<mRole> _Roles { get; set; }
 
 
         public UserManager<User> UserManager;
-        public RoleManager<IdentityRole> RoleManager;
+        public RoleManager<mRole> RoleManager;
 
     }
 }

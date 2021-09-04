@@ -18,7 +18,7 @@ namespace TodoApp.Application.AuthProcessing.Concrete
         {
             seckey = _seckey;
         }
-        public string Generate(string Id)
+        public string Generate(string Id, string Role = "User")
         {
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -27,7 +27,8 @@ namespace TodoApp.Application.AuthProcessing.Concrete
             {
                 Subject = new ClaimsIdentity(new Claim[] {
 
-                    new Claim(ClaimTypes.UserData, Id)
+                    new Claim(ClaimTypes.UserData, Id),
+                    new Claim(ClaimTypes.Role, Role)
 
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),

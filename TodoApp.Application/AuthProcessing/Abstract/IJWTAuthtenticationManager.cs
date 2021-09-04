@@ -8,7 +8,7 @@ namespace TodoApp.Application.AuthProcessing
 {
     public interface IJWTAuthtenticationManager
     {
-        string Generate(string Id);
+        string Generate(string Id,string Role = "User");
         public JwtSecurityToken Verify(string jwt);
     }
 

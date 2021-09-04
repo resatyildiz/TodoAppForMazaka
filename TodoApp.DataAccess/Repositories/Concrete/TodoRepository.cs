@@ -8,25 +8,12 @@ using TodoApp.Entities;
 
 namespace TodoApp.DataAccess.Repositories.Concrete
 {
-    public class TodoRepository : Repository<TodoRepository>, ITodoRepository
+    public class TodoRepository : Repository<Todo>, ITodoRepository
     {
-        public TodoRepository(AppContext context):base(context)
-        {
-
-        }
+        public TodoRepository(AppContext context):base(context){}
 
         // I could casting to AppContext because I was 'protected' define this object.
         public AppContext AppContext { get { return _context as AppContext; } }
-
-        public void Add(Todo entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddRange(IEnumerable<Todo> entities)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<Todo> GetTodoListWithUsers()
         {
@@ -38,19 +25,5 @@ namespace TodoApp.DataAccess.Repositories.Concrete
             return AppContext.Todos.Take(count);
         }
 
-        public void RemoveRange(IEnumerable<Todo> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Todo> IRepository<Todo>.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        Todo IRepository<Todo>.GetById(string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

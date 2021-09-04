@@ -14,11 +14,14 @@ namespace TodoApp.DataAccess
             _AppContext = context;
             TodoRepository = new TodoRepository(_AppContext);
             UserRepository = new UserRepository(_AppContext);
+            MRoleRepository = new MRoleRepository(_AppContext);
         }
 
         public ITodoRepository TodoRepository { get; private set; }
 
         public IUserRepository UserRepository { get; private set; }
+
+        public IMRoleRepository MRoleRepository { get; private set; }
 
         public int Complete()
         {

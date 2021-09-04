@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using TodoApp.Application.AuthProcessing;
 using TodoApp.Application.Dtos;
 using TodoApp.DataAccess;
+using Microsoft.AspNet.Identity.EntityFramework;
+using TodoApp.Entities;
 
 namespace TodoApp.Application.Controllers
 {
@@ -25,8 +27,7 @@ namespace TodoApp.Application.Controllers
             uow = new UnitOfWork(new DataAccess.AppContext());
         }
 
-
-        [HttpGet("user")]
+        [HttpGet("user")] // Annotation
         public IActionResult authUser()
         {
             try
@@ -62,7 +63,11 @@ namespace TodoApp.Application.Controllers
                 return BadRequest(new { message = "Invalid Credentials" });
             }
 
-            var jwt = _jWTAuthtenticationManager.Generate(_user.Id);
+            var roleId = _user.Roles.First().RoleId.ToString();
+            mRole mRole = uow.MRoleRepository.GetById(roleId);
+
+
+            var jwt = _jWTAuthtenticationManager.Generate(_user.Id,mRole.Name);
 
 
             Response
