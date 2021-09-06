@@ -31,7 +31,7 @@ namespace TodoApp.Application.AuthProcessing.Concrete
                     new Claim(ClaimTypes.Role, Role)
 
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddYears(1), // 1 YEAR TIMES ADDED FOR TEST DEVELOPMENT 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
 

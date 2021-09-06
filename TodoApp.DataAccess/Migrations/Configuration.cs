@@ -73,7 +73,7 @@
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
-
+            /*
             foreach (mRole role in roles)
             {
                 context.Roles.Add(role);
@@ -83,6 +83,7 @@
             {
                 context.Users.Add(user);
             }
+            */
 
         }
         

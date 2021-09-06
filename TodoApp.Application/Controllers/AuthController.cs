@@ -2,14 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 using System.Linq;
-using System.Threading.Tasks;
 using TodoApp.Application.AuthProcessing;
 using TodoApp.Application.Dtos;
 using TodoApp.DataAccess;
-using Microsoft.AspNet.Identity.EntityFramework;
 using TodoApp.Entities;
 
 namespace TodoApp.Application.Controllers
@@ -17,11 +13,11 @@ namespace TodoApp.Application.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class Auth : ControllerBase
+    public class AuthController : ControllerBase
     {
         private IJWTAuthtenticationManager _jWTAuthtenticationManager;
         private UnitOfWork uow;
-        public Auth(IJWTAuthtenticationManager jWTAuthtenticationManager)
+        public AuthController(IJWTAuthtenticationManager jWTAuthtenticationManager)
         {
             _jWTAuthtenticationManager = jWTAuthtenticationManager;
             uow = new UnitOfWork(new DataAccess.AppContext());

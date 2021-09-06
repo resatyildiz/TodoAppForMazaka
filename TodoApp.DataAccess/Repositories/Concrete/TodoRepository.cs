@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using TodoApp.DataAccess.Repositories.Abstract;
@@ -19,11 +20,18 @@ namespace TodoApp.DataAccess.Repositories.Concrete
         {
             return AppContext.Todos.Take(5);
         }
+        public Todo GetByIdInt(int id) {
+            return AppContext.Todos.Find(id);
+        }
 
         public IEnumerable<Todo> GetTopTodoList(int count)
         {
             return AppContext.Todos.Take(count);
         }
 
+        public Todo UpdateTodo(Todo todo)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

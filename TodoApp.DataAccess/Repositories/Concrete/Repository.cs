@@ -10,9 +10,9 @@ namespace TodoApp.DataAccess.Repositories.Concrete
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected IdentityDbContext _context;
+        protected AppContext _context;
         private DbSet<TEntity> _dbSet;
-        public Repository(IdentityDbContext context)
+        public Repository(AppContext context)
         {
             _context = context;
             _dbSet = _context.Set<TEntity>();
