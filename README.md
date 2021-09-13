@@ -53,3 +53,5 @@ yapıldı/yapılmadı olarak işaretlediklerinde güncelleme yapılacak
 1 - Proje Bağımlılıkları Yükleyin
 
 2 - NuGet Consolunda DataAccess Katmanı seçiliyken `update-database` komutunu çalıştırınız.
+
+3 - Kolay Gelsin :)
