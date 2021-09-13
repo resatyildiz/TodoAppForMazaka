@@ -15,19 +15,19 @@ namespace TodoApp.Application.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private IJWTAuthtenticationManager _jWTAuthtenticationManager;
-        private UnitOfWork uow;
-        public AuthController(IJWTAuthtenticationManager jWTAuthtenticationManager)
+        private IJWTAuthtenticationManager jWTAuthtenticationManager;
+        private IUnitOfWork uow;
+        public AuthController(IJWTAuthtenticationManager _jWTAuthtenticationManager, IUnitOfWork _uow)
         {
-            _jWTAuthtenticationManager = jWTAuthtenticationManager;
-            uow = new UnitOfWork(new DataAccess.AppContext());
+            jWTAuthtenticationManager = _jWTAuthtenticationManager;
+            uow = _uow;
         }
 
         [HttpGet("user")] // Annotation
         public IActionResult AuthUser()
         {
             var jwt = Request.Cookies["jwt"];
-            User user = _jWTAuthtenticationManager.getAuthUser(jwt);
+            User user = jWTAuthtenticationManager.getAuthUser(jwt);
             if (user != null) return Ok(user);
             else return Unauthorized();
         }
@@ -50,7 +50,7 @@ namespace TodoApp.Application.Controllers
             mRole mRole = uow.MRoleRepository.GetById(roleId);
 
 
-            var jwt = _jWTAuthtenticationManager.Generate(_user.Id,mRole.Name);
+            var jwt = jWTAuthtenticationManager.Generate(_user.Id,mRole.Name);
 
 
             Response

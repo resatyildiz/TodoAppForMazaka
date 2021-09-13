@@ -16,14 +16,14 @@ namespace TodoApp.Application.Controllers
     [Route("api/[controller]")]
     public class TodoController : ControllerBase
     {
-        UnitOfWork uow;
+        private IUnitOfWork _uow;
         private IJWTAuthtenticationManager _jWTAuthtenticationManager;
         private readonly ILogger<TodoController> _logger;
 
-        public TodoController(ILogger<TodoController> logger, IJWTAuthtenticationManager jWTAuthtenticationManager)
+        public TodoController(ILogger<TodoController> logger, IJWTAuthtenticationManager jWTAuthtenticationManager, IUnitOfWork uow)
         {
             _logger = logger;
-            uow = new UnitOfWork(new DataAccess.AppContext());
+            _uow = uow;
             _jWTAuthtenticationManager = jWTAuthtenticationManager;
         }
 
@@ -35,9 +35,9 @@ namespace TodoApp.Application.Controllers
             mRole userRole = _jWTAuthtenticationManager.getAuthUserRole(jwt);
             User user = _jWTAuthtenticationManager.getAuthUser(jwt);
             if (userRole != null && userRole.Name == "User")
-                return uow.TodoRepository.GetByUserId(user.Id.ToString());
+                return _uow.TodoRepository.GetByUserId(user.Id.ToString());
             else
-                return uow.TodoRepository.GetAll();
+                return _uow.TodoRepository.GetAll();
         }
 
         [Authorize(Roles = "Admin")]
@@ -54,9 +54,9 @@ namespace TodoApp.Application.Controllers
             _todo.IsActive = true; // Veri aktif olarak oluşturuluyor.
             _todo.IsStatus = false;
 
-            uow.TodoRepository.Add(_todo);
+            _uow.TodoRepository.Add(_todo);
 
-            uow.Complete();
+            _uow.Complete();
             return _todo;
         }
 
@@ -64,7 +64,7 @@ namespace TodoApp.Application.Controllers
         [HttpPut("updatecontent")]
         public IActionResult UpdateTodoContent([FromBody] TodoCredential todo)
         {
-            Todo _todo = uow.TodoRepository.GetByIdInt(todo.id);
+            Todo _todo = _uow.TodoRepository.GetByIdInt(todo.id);
 
             if (todo == null) return NotFound(); 
 
@@ -76,7 +76,7 @@ namespace TodoApp.Application.Controllers
             _todo.TodoToId = todo.TodoTo;
             _todo.IsStatus = todo.isStatus;
 
-            uow.Complete();
+            _uow.Complete();
             return Ok(_todo);
         }
 
@@ -84,7 +84,7 @@ namespace TodoApp.Application.Controllers
         [HttpPut("updatestatus")]
         public IActionResult UpdateTodoStatus([FromBody] TodoCredential todo)
         {
-            Todo _todo = uow.TodoRepository.GetByIdInt(todo.id);
+            Todo _todo = _uow.TodoRepository.GetByIdInt(todo.id);
 
             if (todo == null) return NotFound();
 
@@ -92,7 +92,7 @@ namespace TodoApp.Application.Controllers
             _todo.UpdatedFromId = todo.updatedFrom;
             _todo.IsStatus = todo.isStatus;
 
-            uow.Complete();
+            _uow.Complete();
             return Ok(_todo);
         }
 
@@ -101,7 +101,7 @@ namespace TodoApp.Application.Controllers
         public IActionResult DeleteTodo([FromBody] TodoCredential todo)
         {
 
-            Todo _todo = uow.TodoRepository.GetByIdInt(todo.id);
+            Todo _todo = _uow.TodoRepository.GetByIdInt(todo.id);
 
             if (todo == null) return NotFound();
 
@@ -109,7 +109,7 @@ namespace TodoApp.Application.Controllers
             _todo.DeletedAt = DateTime.UtcNow;
             _todo.IsActive = false;
 
-            uow.Complete();
+            _uow.Complete();
             return Ok(_todo);
 
         }

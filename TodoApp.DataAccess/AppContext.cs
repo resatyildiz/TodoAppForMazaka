@@ -14,7 +14,7 @@ namespace TodoApp.DataAccess
          * I WILLL READ 'CONNECTIONSTRING' TEXT FROM APPSETTINGS.JSON. 
          * I COULDN'T GET TO THE TEXT FROM THE FILE. 
          */
-        public AppContext() : base("Server=DESKTOP-Q70D9TV;Database=TodoAppDatabase;Trusted_Connection=True;") /* THE VARIABLE OF THIS PROB */
+        public AppContext(String dbString) : base(dbString) /* THE VARIABLE OF THIS PROB */
         {
         }
 
