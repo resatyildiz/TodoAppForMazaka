@@ -26,12 +26,17 @@ namespace TodoApp.DataAccess.Repositories.Concrete
 
         public IEnumerable<Todo> GetTopTodoList(int count)
         {
-            return AppContext.Todos.Take(count);
+            return AppContext.Todos.Where(to => to.IsActive == true).Take(count);
         }
 
         public Todo UpdateTodo(Todo todo)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Todo> GetByUserId(string id)
+        {
+            return AppContext.Todos.Where(to => to.TodoToId == id).OrderBy(to => to.CreatedAt).ToList();
         }
     }
 }

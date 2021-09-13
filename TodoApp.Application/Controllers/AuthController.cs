@@ -24,30 +24,17 @@ namespace TodoApp.Application.Controllers
         }
 
         [HttpGet("user")] // Annotation
-        public IActionResult authUser()
+        public IActionResult AuthUser()
         {
-            try
-            {
-                var jwt = Request.Cookies["jwt"];
-                var token = _jWTAuthtenticationManager.Verify(jwt);
-                string userId = token.Payload.First().Value.ToString();
-
-                User user = uow.UserRepository.GetById(userId);
-
-
-                return Ok(user);
-            }
-            catch(Exception e)
-            {
-                return Unauthorized(new { message = e.Message.ToString()});
-            }
+            var jwt = Request.Cookies["jwt"];
+            User user = _jWTAuthtenticationManager.getAuthUser(jwt);
+            if (user != null) return Ok(user);
+            else return Unauthorized();
         }
-
-
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult login([FromBody] UserCredential user)
+        public IActionResult Login([FromBody] UserCredential user)
         {
 
             User _user = uow.UserRepository.GetByUserName(user.Username);

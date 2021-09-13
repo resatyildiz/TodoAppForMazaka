@@ -7,16 +7,19 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.DataAccess;
+using TodoApp.Entities;
 
 namespace TodoApp.Application.AuthProcessing.Concrete
 {
     public class JWTAuthtenticateManager : IJWTAuthtenticationManager
     {
         private readonly string seckey;
+        private UnitOfWork uow;
 
         public JWTAuthtenticateManager(string _seckey)
         {
             seckey = _seckey;
+            uow = new UnitOfWork(new DataAccess.AppContext());
         }
         public string Generate(string Id, string Role = "User")
         {
@@ -38,6 +41,26 @@ namespace TodoApp.Application.AuthProcessing.Concrete
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public User getAuthUser(string jwt)
+        {
+                var token = Verify(jwt);
+                string userId = token.Payload.First().Value.ToString();
+
+                User user = uow.UserRepository.GetById(userId);
+
+                return user;
+        }
+
+        public mRole getAuthUserRole(string jwt)
+        {
+            var token = Verify(jwt);
+            string userId = token.Payload.First().Value.ToString();
+
+            User user = uow.UserRepository.GetById(userId);
+
+            return uow.MRoleRepository.GetById(user.Roles.First().RoleId.ToString());
         }
 
         public JwtSecurityToken Verify(string jwt) 

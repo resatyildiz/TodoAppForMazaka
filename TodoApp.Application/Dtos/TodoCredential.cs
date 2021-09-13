@@ -16,6 +16,7 @@ namespace TodoApp.Application.Dtos
         public string TodoTo { get; set; }
         public string updatedFrom { get; set; }
         public string updatedAt { get; set; }
-        public string isStatus { get; set; }
+        public bool isStatus { get; set; }
+
     }
 }
