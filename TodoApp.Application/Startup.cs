@@ -9,16 +9,19 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TodoApp.Application.AuthProcessing;
 using TodoApp.Application.AuthProcessing.Concrete;
+using TodoApp.DataAccess;
 
 namespace TodoApp.Application
 {
     public class Startup
     {
-        public string seckey; // JWT Security Key
+        private string _seckey; // JWT Security Key
+        private string _dbConStr;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            seckey = Configuration.GetConnectionString("JWTSecurityKey");
+            _seckey = Configuration.GetConnectionString("JWTSecurityKey");
+            _dbConStr = Configuration.GetConnectionString("TodoDatabase");
         }
 
         public IConfiguration Configuration { get; set; }
@@ -27,25 +30,33 @@ namespace TodoApp.Application
         {
             services.AddCors();
             services.AddControllers();
-            
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).
-            AddJwtBearer(x => {
+            AddJwtBearer(x =>
+            {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(seckey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_seckey)),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                 };
             });
 
-            services.AddSingleton<IJWTAuthtenticationManager>(new JWTAuthtenticateManager(seckey));
+            services.AddSingleton<IJWTAuthtenticationManager>(new JWTAuthtenticateManager(_seckey,_dbConStr));
+
+            services.AddSingleton<IUnitOfWork>(
+                new UnitOfWork(
+                    new DataAccess.AppContext(_dbConStr)
+                    )
+                );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +73,7 @@ namespace TodoApp.Application
             app.UseRouting();
 
             app.UseCors(options => options
-                .WithOrigins(new[] {"http://localhost:3000","http://localhost:8080","http://localhost:4200" })            
+                .WithOrigins(new[] { "http://localhost:3000", "http://localhost:8080", "http://localhost:4200" })
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()

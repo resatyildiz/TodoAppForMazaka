@@ -13,19 +13,19 @@ namespace TodoApp.Application.AuthProcessing.Concrete
 {
     public class JWTAuthtenticateManager : IJWTAuthtenticationManager
     {
-        private readonly string seckey;
-        private UnitOfWork uow;
+        private readonly string _seckey;
+        private UnitOfWork _uow;
 
-        public JWTAuthtenticateManager(string _seckey)
+        public JWTAuthtenticateManager(string seckey, string dbStr)
         {
-            seckey = _seckey;
-            uow = new UnitOfWork(new DataAccess.AppContext());
+            _seckey = seckey;
+            _uow = new UnitOfWork(new DataAccess.AppContext(dbStr));
         }
         public string Generate(string Id, string Role = "User")
         {
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenKey = Encoding.ASCII.GetBytes(seckey);
+            var tokenKey = Encoding.ASCII.GetBytes(_seckey);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[] {
@@ -48,7 +48,7 @@ namespace TodoApp.Application.AuthProcessing.Concrete
                 var token = Verify(jwt);
                 string userId = token.Payload.First().Value.ToString();
 
-                User user = uow.UserRepository.GetById(userId);
+                User user = _uow.UserRepository.GetById(userId);
 
                 return user;
         }
@@ -58,15 +58,15 @@ namespace TodoApp.Application.AuthProcessing.Concrete
             var token = Verify(jwt);
             string userId = token.Payload.First().Value.ToString();
 
-            User user = uow.UserRepository.GetById(userId);
+            User user = _uow.UserRepository.GetById(userId);
 
-            return uow.MRoleRepository.GetById(user.Roles.First().RoleId.ToString());
+            return _uow.MRoleRepository.GetById(user.Roles.First().RoleId.ToString());
         }
 
         public JwtSecurityToken Verify(string jwt) 
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(seckey);
+            var key = Encoding.ASCII.GetBytes(_seckey);
 
             tokenHandler.ValidateToken(jwt, new TokenValidationParameters
             {
