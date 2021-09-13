@@ -5,14 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AppDBContext.cs" />
+    <Compile Remove="Helpers\JWTService.cs" />
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.18" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.9" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.9" />
@@ -22,6 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\TodoApp.DataAccess\TodoApp.DataAccess.csproj" />
     <ProjectReference Include="..\TodoApp\TodoApp.Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 

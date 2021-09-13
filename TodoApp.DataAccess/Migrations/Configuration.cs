@@ -45,13 +45,15 @@
                {
                    UserName = "mazakaadmin",
                    Email = "admin@mazaka.com",
-                   FullName = "Mazaka Admin"
+                   FullName = "Mazaka Admin",
+                   PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
                },
                new User()
                {
                    UserName = "mazakauser",
                    Email = "user@mazaka.com",
-                   FullName = "Mazaka User"
+                   FullName = "Mazaka User",
+                   PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
                }
             };
 
@@ -72,6 +74,7 @@
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
 
+            /*
             foreach (mRole role in roles)
             {
                 context.Roles.Add(role);
@@ -81,6 +84,7 @@
             {
                 context.Users.Add(user);
             }
+            */
 
         }
         

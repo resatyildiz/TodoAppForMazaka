@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.DataAccess.Repositories.Abstract;
@@ -17,21 +19,6 @@ namespace TodoApp.DataAccess.Repositories.Concrete
 
         public AppContext AppContext { get { return _context as AppContext; } }
 
-        public void Add(Todo entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddRange(IEnumerable<Todo> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<User> GetAllUser()
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Todo> GetTodoListWithUsers()
         {
             throw new NotImplementedException();
@@ -42,16 +29,9 @@ namespace TodoApp.DataAccess.Repositories.Concrete
             throw new NotImplementedException();
         }
 
-        public void RemoveRange(IEnumerable<Todo> entities)
-        {
-            throw new NotImplementedException();
-        }
-
         public User GetByUserName(string username) 
         {
-            /**/
-            throw new NotImplementedException();
+            return (User) AppContext.Users.FirstOrDefault(u => u.UserName == username);
         }
-
     }
 }

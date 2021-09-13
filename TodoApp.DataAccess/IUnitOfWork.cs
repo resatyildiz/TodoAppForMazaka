@@ -11,6 +11,8 @@ namespace TodoApp.DataAccess
 
         IUserRepository UserRepository { get; }
 
+        IMRoleRepository MRoleRepository { get; }
+
         int Complete();
     }
 }
