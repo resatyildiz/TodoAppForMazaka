@@ -47,3 +47,8 @@ yapıldı/yapılmadı olarak işaretlediklerinde güncelleme yapılacak
 ● Her dilin kendine ait kod yazım standartlarına dikkat edilmeli
 
 ● Proje süresi 4 gündür
+
+#Kurulum
+----
+1 - Proje Bağımlılıkları Yükleyin
+2 - NuGet Consolunda DataAccess Katmanı seçiliyken `update-database` komutunu çalıştırınız.
